@@ -18,3 +18,6 @@ Route::get('/timeline/data', [\App\Http\Controllers\Api\TimelineController::clas
 
 Route::post('/projects', [\App\Http\Controllers\Api\ProjectController::class, 'store']);
 Route::put('/projects/{project}', [\App\Http\Controllers\Api\ProjectController::class, 'update']);
+
+Route::post('/projects', [\App\Http\Controllers\Api\ProjectController::class, 'store']);
+Route::put('/projects/{project}', [\App\Http\Controllers\Api\ProjectController::class, 'update']);
