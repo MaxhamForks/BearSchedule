@@ -17,6 +17,9 @@ class AddColumnParentGroupToGroups extends Migration
             $table->bigInteger('parent')->nullable()->unsigned();
             $table->foreign('parent', 'key_parent')->references('id')->on('groups')
                 ->onDelete('cascade');
+        });
+
+        Schema::table('groups', function (Blueprint $table) {
             $table->dropColumn('nestedGroups');
         });
     }
@@ -30,6 +33,10 @@ class AddColumnParentGroupToGroups extends Migration
     {
         Schema::table('groups', function (Blueprint $table) {
             $table->dropColumn('parent');
+        });
+
+        Schema::table('groups', function (Blueprint $table) {
+            $table->longText('nestedGroups')->nullable();
         });
     }
 }

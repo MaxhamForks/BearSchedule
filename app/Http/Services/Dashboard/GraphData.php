@@ -19,10 +19,8 @@ class GraphData extends BaseService
                 $where->whereIn('project_id', $projects);
             }
         })->where('created_at', '>=', $last)
-            ->selectRaw('MONTH(created_at) Date, count(DISTINCT id) as amount')
-            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->forLogboard()
             ->get();
-
 
         $data = collect();
         $last->addMonth()->month;
