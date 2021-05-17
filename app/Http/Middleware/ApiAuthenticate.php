@@ -18,6 +18,8 @@ class ApiAuthenticate
     private $headerOnly = true;
     private $project = null;
 
+    public static $apiKey;
+
     /**
      * Handle an incoming request.
      *
@@ -32,6 +34,7 @@ class ApiAuthenticate
         if(!($this->checkApiKey($request))) {
             return response()->json('Authenticate error', 400);
         }
+
         if(!$this->tempApiKey()) {
             if (!$this->checkProjects($request)) {
                 return response()->json('Authenticate error. Project not authorized', 400);
@@ -57,6 +60,11 @@ class ApiAuthenticate
        if($apiKey === null && $this->env !== 'prod' || !$this->headerOnly) {
            $apiKey = $request->get($api_param, null);
        }
+
+       if(null == $apiKey) {
+           return false;
+       }
+
        try {
            $this->uuid = Uuid::fromString($apiKey)->toString();
        } catch (\Exception $exception) {
@@ -77,12 +85,21 @@ class ApiAuthenticate
             $project = $request->get('project', null);
         }
 
-        $key = ApiKey::with('projects')->whereHas('projects', function ($projects) use($project) {
+        $key = ApiKey::find($this->uuid);
+        if(null == $key) {
+            return false;
+        }
+
+        self::$apiKey = $key;
+
+        if($key->general_use) {
+            return true;
+        }
+
+        $key->load(['projects' => function ($projects) use($project) {
             $projects->where('project_id', $project);
-        })->find($this->uuid);
+        }]);
 
-        return $key !== null;
+        return 0 != $key->projects->count();
     }
-
-
 }
