@@ -15,3 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/timeline/data', [\App\Http\Controllers\Api\TimelineController::class, 'getData']);
+
+Route::post('/projects', [\App\Http\Controllers\Api\ProjectController::class, 'store']);
+Route::put('/projects/{project}', [\App\Http\Controllers\Api\ProjectController::class, 'update']);
