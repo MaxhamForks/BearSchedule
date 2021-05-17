@@ -8,6 +8,7 @@ use App\Models\Timeline\Group;
 use App\Models\Timeline\Item;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class ProjectLog extends Model
 {
@@ -51,6 +52,17 @@ class ProjectLog extends Model
             return false;
         }
 
+    }
+
+    public function scopeForLogboard($query)
+    {
+        if (DB::getDriverName() !== 'sqlite') {
+            $query->selectRaw('MONTH(created_at) Date, count(DISTINCT id) as amount')
+                ->groupBy(DB::raw('MONTH(created_at)'));
+        } else {
+            $query->selectRaw('strftime("%m", created_at) Date, count(DISTINCT id) as amount')
+                ->groupBy(DB::raw('strftime("%m", created_at)'));
+        }
     }
 
 }
