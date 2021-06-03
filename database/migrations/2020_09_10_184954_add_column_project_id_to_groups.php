@@ -16,7 +16,9 @@ class AddColumnProjectIdToGroups extends Migration
         Schema::table('groups', function (Blueprint $table) {
             $table->bigInteger('project_id')->unsigned();
             $table->foreign('project_id')
-                ->references('id')->on('projects');
+                                ->references('id')
+                                ->on('projects')
+                                ->onDelete('cascade');
         });
     }
 

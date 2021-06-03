@@ -44,6 +44,8 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->mapApiRoutes();
 
+        $this->mapSyncRoutes();
+
         $this->mapWebRoutes();
 
         //
@@ -76,5 +78,13 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
+    }
+
+    protected function mapSyncRoutes()
+    {
+        Route::prefix('sync')
+            ->middleware('sync')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/sync.php'));
     }
 }
