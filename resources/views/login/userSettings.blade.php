@@ -60,6 +60,28 @@
                             </b-input>
                         </b-field>
                     @endif
+
+                    @if(!$isDisabled)
+                        @if(auth()->user()->apiKey)
+                        <div class="field">
+                            <label class="label">@lang('auth.general_api')</label>
+                            <div class="control is-clearfix">
+                                <input type="text" disabled name="general_api" class="input" value="{{ auth()->user()->apiKey->id }}">
+                            </div>
+                        </div>
+                            <button name="disable_apikey" type="submit" class="button is-danger">
+                                <span>Disable API</span>
+                            </button>
+                        @else
+                            <button name="generate_apikey" type="submit" class="button is-warning">
+                                <span>Enable API</span>
+                            </button>
+                        @endif
+                    @endif
+
+
+
+
                 </div>
 
                 <div class="column">

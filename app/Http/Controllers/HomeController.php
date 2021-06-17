@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helper\UserHelper;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Services\Api\UpdateApiKey;
 use App\Http\Services\Dashboard\GraphData;
 use App\Http\Services\Settings\Account;
 use App\Models\Project;
@@ -40,6 +41,15 @@ class HomeController extends Controller
 
     public function saveSettings(Request $request)
     {
+        if ($request->has('generate_apikey')) {
+            app(UpdateApiKey::class)->create($request->user());
+            return redirect()->route('user.settings');
+        }
+        if ($request->has('disable_apikey')) {
+            app(UpdateApiKey::class)->destroy($request->user());
+            return redirect()->route('user.settings');
+        }
+
         $validates = [
             'name' => 'required|max:255',
             'email' => 'required|email',
@@ -51,6 +61,7 @@ class HomeController extends Controller
             $changePassword = true;
         }
         $validatedData = $request->validate($validates);
+
         $this->logicClass->update(
             auth()->user(),
             $validatedData,

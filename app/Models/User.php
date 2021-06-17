@@ -74,4 +74,10 @@ class User extends Authenticatable
     {
         return $this->projects()->where('project_id', $id)->first() !== null;
     }
+
+    public function apiKey()
+    {
+        return $this->hasOne(ApiKey::class)->where('general_use', 1);
+    }
+
 }
