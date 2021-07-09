@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Resources\TimelineGroupApiResource;
 use App\Models\Project;
 use App\Models\Timeline\Group;
 use App\Models\Timeline\Item;
@@ -66,6 +67,11 @@ class SyncController
             'project' => $project,
             'groups' => $this->groups,
             'items' => $this->items,
+            'sync' => [
+                'groups' => TimelineGroupApiResource::collection(
+                    $project->groups()->with('items')->get()
+                ),
+            ],
         ]);
     }
 }

@@ -17,6 +17,7 @@ class TimelineGroupApiResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'external_id' => $this->external_id,
             'title' => $this->title,
             'content' => $this->content,
             'created_at' => $this->created_at ? Carbon::parse($this->created_at)->toAtomString() : null,

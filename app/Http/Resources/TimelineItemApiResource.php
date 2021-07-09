@@ -17,6 +17,7 @@ class TimelineItemApiResource extends JsonResource
     {
         return [
             'id' => $this->id,
+            'external_id' => $this->external_id,
             'title' => $this->title,
             'content' => $this->content,
             'start' => $this->start,
